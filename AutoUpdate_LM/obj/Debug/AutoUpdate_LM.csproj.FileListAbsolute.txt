@@ -1,0 +1,9 @@
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\bin\Debug\AutoUpdate_LM.exe.config
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\bin\Debug\AutoUpdate_LM.exe
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\bin\Debug\AutoUpdate_LM.pdb
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\obj\Debug\AutoUpdate_LM.Properties.Resources.resources
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\obj\Debug\AutoUpdate_LM.csproj.GenerateResource.Cache
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\obj\Debug\AutoUpdate_LM.exe
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\obj\Debug\AutoUpdate_LM.pdb
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\obj\Debug\AutoUpdate_LM.AutoUpdate.resources
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\AutoUpdate_LM\obj\Debug\AutoUpdate_LM.csprojResolveAssemblyReference.cache

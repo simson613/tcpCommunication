@@ -1,0 +1,9 @@
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\bin\Debug\Server.exe.config
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\bin\Debug\Server.exe
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\bin\Debug\Server.pdb
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.Properties.Resources.resources
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.csproj.GenerateResource.Cache
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.exe
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.pdb
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.Server.resources
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache

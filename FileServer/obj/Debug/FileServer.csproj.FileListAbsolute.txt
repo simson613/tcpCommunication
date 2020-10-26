@@ -1,0 +1,6 @@
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\FileServer\bin\Debug\FileServer.exe.config
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\FileServer\bin\Debug\FileServer.exe
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\FileServer\bin\Debug\FileServer.pdb
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\FileServer\obj\Debug\FileServer.exe
+c:\users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\FileServer\obj\Debug\FileServer.pdb
+C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\FileServer\obj\Debug\FileServer.csprojResolveAssemblyReference.cache
