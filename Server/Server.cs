@@ -43,7 +43,7 @@ namespace Server
                     if (client.Connected)
                         Console.WriteLine("Add Client Connection: {0} ", ((IPEndPoint)client.Client.RemoteEndPoint).ToString());
 
-                    Thread tcpHandlerThread = new Thread(new ParameterizedThreadStart(tcpHandler));
+                    Thread tcpHandlerThread = new Thread(new ParameterizedThreadStart(TcpHandler));
                     tcpHandlerThread.Start(client);
                 }
 
@@ -60,55 +60,113 @@ namespace Server
             Console.WriteLine("Server Shutdown");
         }
 
-        public void tcpHandler(Object client)
+        public void TcpHandler(Object client)
         {
             TcpClient tcpClient = (TcpClient)client;
             NetworkStream stream = tcpClient.GetStream();
+            stream.ReadTimeout = 10;
+
+            byte[] bytes = new byte[10];
+            int byteLength = stream.Read(bytes, 0, bytes.Length);   //FileCount Receive
+            string flag = Encoding.Default.GetString(bytes, 0, byteLength);
+
+            if (flag.Equals("Upload"))
+            {
+
+            }
+            else if (flag.Equals("Download"))
+            {
+
+            }
+            else
+            {
+                AutoUpdate(stream);
+            }
+
+            stream.Close();
+            tcpClient.Close();
+        }
+
+        public void AutoUpdate(NetworkStream stream)
+        {
             //List<string> files = new List<string>(Directory.EnumerateFiles(@"C:\AiHelper LiveM\AiHelper LiveM\transfer"));
             List<string> files = new List<string>(Directory.EnumerateFiles(@"C:\Users\simso\OneDrive\바탕 화면\AutoUpdateTest"));
-
-            byte[] bytes = new byte[3];
-            bytes = Encoding.Default.GetBytes(files.Count.ToString());
-            stream.Write(bytes, 0, bytes.Length);   //Filecount Send
-
-            bytes = new byte[1];
-            stream.Read(bytes, 0, 1);   //Request Receive
+            string fileInfo = "";
 
             foreach (string fileName in files)
             {
                 FileInfo file = new FileInfo(fileName);
-                bytes = new byte[256];
-                bytes = Encoding.Default.GetBytes(file.Name + "\\" + file.Length.ToString());
-                stream.Write(bytes, 0, bytes.Length);   //FileInfo Send
-
-                bytes = new byte[1];
-                stream.Read(bytes, 0, 1);       //Request Receive
-
-                if (Encoding.Default.GetString(bytes) == "O")
-                {
-                    byte[] fileBytes = new byte[8192];
-                    FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                    int count = 0;
-
-                    while ((count = fs.Read(fileBytes, 0, fileBytes.Length)) > 0)
-                    {
-                        try
-                        {
-                            stream.Write(fileBytes, 0, count);      //File Send
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                        }
-                    }
-                    fs.Close();
-                    Console.WriteLine("File Send Info {0} / {1}", fileName, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).ToString());
-                    stream.Read(bytes, 0, 1);       //Request Receive
-                }
+                fileInfo += file.Name + "*" + file.LastAccessTime.ToString() + "*" + file.Length.ToString() + "/";
             }
-            
-            stream.Close();
-            tcpClient.Close();
+
+            byte[] bytes = new byte[1024];
+            bytes = Encoding.Default.GetBytes(fileInfo);
+            stream.Write(bytes, 0, bytes.Length);   //File Info Send
+
+            while (true)
+            {
+                bytes = new byte[255];
+                int byteLength = stream.Read(bytes, 0, bytes.Length);   //File Request Receive
+                string requestFile = Encoding.Default.GetString(bytes, 0, byteLength);
+
+                //byte[] bytes = new byte[1024];
+                //bytes = Encoding.Default.GetBytes(fileInfo);
+                //stream.Write(bytes, 0, bytes.Length);   //Filecount Send
+
+
+                byte[] fileBytes = new byte[8192];
+                FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                int count = 0;
+
+                while ((count = fs.Read(fileBytes, 0, fileBytes.Length)) > 0)
+                {
+                    try
+                    {
+                        stream.Write(fileBytes, 0, count);      //File Send
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
+                fs.Close();
+            }
+
+            //bytes = new byte[1];
+            //stream.Read(bytes, 0, 1);   //Request Receive
+
+            //foreach (string fileName in files)
+            //{
+            //    FileInfo file = new FileInfo(fileName);
+            //    bytes = new byte[256];
+            //    bytes = Encoding.Default.GetBytes(file.Name + "\\" + file.Length.ToString());
+            //    stream.Write(bytes, 0, bytes.Length);   //FileInfo Send
+
+            //    bytes = new byte[1];
+            //    stream.Read(bytes, 0, 1);       //Request Receive
+
+            //    if (Encoding.Default.GetString(bytes) == "O")
+            //    {
+            //        byte[] fileBytes = new byte[8192];
+            //        FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            //        int count = 0;
+
+            //        while ((count = fs.Read(fileBytes, 0, fileBytes.Length)) > 0)
+            //        {
+            //            try
+            //            {
+            //                stream.Write(fileBytes, 0, count);      //File Send
+            //            }
+            //            catch (Exception e)
+            //            {
+            //                Console.WriteLine(e);
+            //            }
+            //        }
+            //        fs.Close();
+            //        //Console.WriteLine("File Send Info {0} / {1}", fileName, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).ToString());
+            //        stream.Read(bytes, 0, 1);       //Request Receive
+            //    }
+            //}
         }
     }
 }

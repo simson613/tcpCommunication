@@ -28,33 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pbrFileUpdate = new System.Windows.Forms.ProgressBar();
-            this.lblUpdate = new System.Windows.Forms.Label();
+            this.pbrTotal = new System.Windows.Forms.ProgressBar();
+            this.lblSpeed = new System.Windows.Forms.Label();
+            this.pbrNow = new System.Windows.Forms.ProgressBar();
+            this.lblCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // pbrFileUpdate
+            // pbrTotal
             // 
-            this.pbrFileUpdate.Location = new System.Drawing.Point(32, 54);
-            this.pbrFileUpdate.Name = "pbrFileUpdate";
-            this.pbrFileUpdate.Size = new System.Drawing.Size(253, 27);
-            this.pbrFileUpdate.TabIndex = 0;
+            this.pbrTotal.Location = new System.Drawing.Point(33, 101);
+            this.pbrTotal.Name = "pbrTotal";
+            this.pbrTotal.Size = new System.Drawing.Size(253, 27);
+            this.pbrTotal.TabIndex = 0;
             // 
-            // lblUpdate
+            // lblSpeed
             // 
-            this.lblUpdate.AutoSize = true;
-            this.lblUpdate.Location = new System.Drawing.Point(126, 25);
-            this.lblUpdate.Name = "lblUpdate";
-            this.lblUpdate.Size = new System.Drawing.Size(66, 12);
-            this.lblUpdate.TabIndex = 1;
-            this.lblUpdate.Text = "Updating...";
+            this.lblSpeed.AutoSize = true;
+            this.lblSpeed.Location = new System.Drawing.Point(55, 25);
+            this.lblSpeed.Name = "lblSpeed";
+            this.lblSpeed.Size = new System.Drawing.Size(62, 12);
+            this.lblSpeed.TabIndex = 1;
+            this.lblSpeed.Text = "AvgSpeed";
+            this.lblSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pbrNow
+            // 
+            this.pbrNow.Location = new System.Drawing.Point(33, 68);
+            this.pbrNow.Name = "pbrNow";
+            this.pbrNow.Size = new System.Drawing.Size(253, 27);
+            this.pbrNow.TabIndex = 2;
+            // 
+            // lblCount
+            // 
+            this.lblCount.AutoSize = true;
+            this.lblCount.Location = new System.Drawing.Point(208, 25);
+            this.lblCount.Name = "lblCount";
+            this.lblCount.Size = new System.Drawing.Size(38, 12);
+            this.lblCount.TabIndex = 3;
+            this.lblCount.Text = "Count";
+            this.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // AutoUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 102);
-            this.Controls.Add(this.lblUpdate);
-            this.Controls.Add(this.pbrFileUpdate);
+            this.ClientSize = new System.Drawing.Size(318, 150);
+            this.Controls.Add(this.lblCount);
+            this.Controls.Add(this.pbrNow);
+            this.Controls.Add(this.lblSpeed);
+            this.Controls.Add(this.pbrTotal);
             this.Name = "AutoUpdate";
             this.Text = "AiHelper_LiveM Auto Update";
             this.Shown += new System.EventHandler(this.AutoUpdate_Shown);
@@ -65,8 +87,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar pbrFileUpdate;
-        private System.Windows.Forms.Label lblUpdate;
+        private System.Windows.Forms.ProgressBar pbrTotal;
+        private System.Windows.Forms.Label lblSpeed;
+        private System.Windows.Forms.ProgressBar pbrNow;
+        private System.Windows.Forms.Label lblCount;
     }
 }
 

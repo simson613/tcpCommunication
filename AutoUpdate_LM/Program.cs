@@ -16,7 +16,8 @@ namespace AutoUpdate_LM
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AutoUpdate());
+            string[] args = Environment.GetCommandLineArgs();
+            Application.Run(new AutoUpdate(args));
         }
     }
 }
