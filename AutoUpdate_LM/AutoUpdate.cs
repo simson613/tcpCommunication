@@ -1,241 +1,239 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AutoUpdate_LM
+namespace AutoUpdate
 {
     public partial class AutoUpdate : Form
     {
-        string flag = "";
-        string filePath = "";
-        string filePathCopy = "";
+        TcpClient client;
+        NetworkStream stream;
 
-        public AutoUpdate(string[] args)
+        /// <summary>
+        /// 생성자
+        /// </summary>
+        public AutoUpdate()
         {
             InitializeComponent();
-
-            //List<string> files = new List<string>(Directory.EnumerateFiles(@"C:\Users\simso\OneDrive\바탕 화면\AutoUpdateTest"));
-            //FileInfo file = new FileInfo(files[0]);
-            //file.LastWriteTime
-            if (args.Length > 0)
-            {
-                //args[0] Upload, Download
-                //args[1] File Path
-                //args[2] Copy File Path
-            }
-            else
-            {
-                flag = "Auto";  //Auto Update
-            }
         }
 
+        /// <summary>
+        /// Form Shown Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AutoUpdate_Shown(object sender, EventArgs e)
         {
-            //string bindIP = "14.32.21.123";
-            string bindIP = "127.0.0.1"; // GetIPAddress();
-            int bindPort = 5605;
-            ////string serverIp = "14.32.21.123";
-            string serverIp = "127.0.0.1"; // GetIPAddress();
+            int bindPort = 56351;
+            while (true)
+            {
+                if (portAvailable(bindPort))
+                    break;
+                else
+                    bindPort++;
+            }
+
+            string serverIp = "192.168.0.8";
             const int serverPort = 5425;
 
             try
             {
-                IPEndPoint clientAddress = new IPEndPoint(IPAddress.Parse(bindIP), bindPort);
+                IPEndPoint clientAddress = new IPEndPoint(GetIPAddress(), bindPort);
                 IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse(serverIp), serverPort);
-                TcpClient client = new TcpClient(clientAddress);
+                client = new TcpClient(clientAddress);
                 client.Connect(serverAddress);
 
-                NetworkStream stream = client.GetStream();
+                stream = client.GetStream();
+
                 byte[] bytes = new byte[10];
-                bytes = Encoding.Default.GetBytes(flag);
+                bytes = Encoding.Default.GetBytes("AutoUpdate");
                 stream.Write(bytes, 0, bytes.Length);   //flag Send
 
-                if (flag.Equals("Upload"))
-                {
+                InitAutoUpdate();
 
-                }
-                else if (flag.Equals("Download"))
-                {
-
-                }
-                else
-                {
-                    InitControls();
-                    InitAutoUpdate(client);
-                }
+                MessageBox.Show("AutoUpdate Completed!");
             }
             catch (SocketException se)
             {
-                Console.WriteLine(se);
+                MessageBox.Show(se.Message);
             }
-
-            Console.WriteLine("클라이언트를 종료합니다.");
-        }
-
-        private string GetIPAddress()
-        {
-            IPHostEntry host;
-            string localIP = "";
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
+            catch (ArgumentNullException ne)
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.ToString();
-                }
+                MessageBox.Show(ne.Message);
             }
-            return localIP;
-        }
 
-        private void InitControls()
-        {
-            pbrTotal.Style = ProgressBarStyle.Continuous;
-            pbrTotal.Minimum = 0;
-            pbrTotal.Maximum = 100;
-            pbrTotal.Value = 0;
-            pbrTotal.Enabled = true;
-        }
-        
-        private void InitAutoUpdate(TcpClient client)
-        {
-            NetworkStream stream = client.GetStream();
-            string dir = Directory.GetCurrentDirectory() + @"\";
-
-            byte[] bytes = new byte[1024];
-            int byteLength = stream.Read(bytes, 0, bytes.Length);   //File Info Receive
-            string fileInfo = Encoding.Default.GetString(bytes, 0, byteLength);
-
-            string[] files = fileInfo.Split('/');
-            Stack<string> fileStack = new Stack<string>();
-            Dictionary<string, string> dicFile = new Dictionary<string, string>();
-            int totalSize = 0;
-
-            for (int i = 0; i < files.Length; i++)
+            if (stream != null)
             {
-                string[] info = files[i].Split('*');
-
-                if (FileCompare(dir + info[0], info[1]))
-                {
-                    dicFile.Add(info[0], info[2]);
-                    fileStack.Push(info[0]);
-                    totalSize += Convert.ToInt32(info[2]);
-                }
+                stream.Close();
+                stream.Dispose();
+                stream = null;
             }
-
-            //bytes = new byte[8];
-            //bytes = Encoding.Default.GetBytes(dicFile.Count.ToString());
-            //stream.Write(bytes, 0, bytes.Length);   //File Count Send
-            
-            if (dicFile.Count > 0)
+            if (client != null)
             {
-                foreach (KeyValuePair<string, string> item in dicFile)
-                {
-                    bytes = new byte[256];
-                    bytes = Encoding.Default.GetBytes(item.Key);
-                    //stream.Write(bytes, 0, bytes.Length);   //File Request Send
-
-                    //string[] serverFile = null;
-                    //bytes = new byte[256];
-                    //byteLength = stream.Read(bytes, 0, bytes.Length);   //Fileinfo Receive
-                    //serverFile = Encoding.Default.GetString(bytes, 0, byteLength).Split('\\');
-                    //string fileName = dir + @"\" + serverFile[0];
-
-                    //bytes = Encoding.Default.GetBytes(FileCompare(fileName, serverFile[1]));
-                    //stream.Write(bytes, 0, 1);   //Request Send
-
-                    //if (Encoding.Default.GetString(bytes) == "O")
-                    //{
-                    int byteCount = 8192;
-                    int indexCount = (Convert.ToInt32(item.Value) / byteCount) + 1;
-                    byte[] fileBytes = new byte[byteCount];  //8192
-                    FileStream fs = new FileStream(item.Key, FileMode.Create, FileAccess.Write);
-                    int count = 0;
-
-                    for (int j = 0; j < indexCount; j++)
-                    {
-                        count = stream.Read(fileBytes, 0, fileBytes.Length);
-                        fs.Write(fileBytes, 0, count);  //File Receive
-                    }
-
-                    fs.Close();
-                    stream.Write(bytes, 0, 1);   //Request Send
-                    //}
-                    //lblSpeed.Text = "Updating... (" + (i + 1) + " / " + fileCount + ")";
-                    //pbrTotal.PerformStep();
-                    //Application.DoEvents();
-                }
+                client.Close();
+                client = null;
             }
-
-
-            //byte[] bytes = new byte[3];
-            //int byteLength = stream.Read(bytes, 0, bytes.Length);   //FileCount Receive
-            //int fileCount = Convert.ToInt32(Encoding.Default.GetString(bytes, 0, byteLength));
-
-            //pbrTotal.Step = 100 / fileCount;
-            //lblSpeed.Text = "Updating... (0 / " + fileCount + ")";
-
-            //bytes = Encoding.Default.GetBytes("O");
-            //stream.Write(bytes, 0, 1);   //Request Send
-
-            for (int i = 0; i < fileCount; i++)
-            {
-                string[] serverFile = null;
-                bytes = new byte[256];
-                byteLength = stream.Read(bytes, 0, bytes.Length);   //Fileinfo Receive
-                serverFile = Encoding.Default.GetString(bytes, 0, byteLength).Split('\\');
-                string fileName = dir + @"\" + serverFile[0];
-
-                bytes = Encoding.Default.GetBytes(FileCompare(fileName, serverFile[1]));
-                stream.Write(bytes, 0, 1);   //Request Send
-
-                if (Encoding.Default.GetString(bytes) == "O")
-                {
-                    int byteCount = 8192;
-                    int indexCount = (Convert.ToInt32(serverFile[1]) / byteCount) + 1;
-                    byte[] fileBytes = new byte[byteCount];  //8192
-                    FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
-                    int count = 0;
-
-                    for (int j = 0; j < indexCount; j++)
-                    {
-                        count = stream.Read(fileBytes, 0, fileBytes.Length);
-                        fs.Write(fileBytes, 0, count);  //File Receive
-                    }
-
-                    fs.Close();
-                    stream.Write(bytes, 0, 1);   //Request Send
-                }
-                lblSpeed.Text = "Updating... (" + (i + 1) + " / " + fileCount + ")";
-                pbrTotal.PerformStep();
-                Application.DoEvents();
-                //lblUpdate.Update();
-            }
-
-            pbrTotal.Value = 100;
-            pbrTotal.Enabled = false;
-            stream.Close();
-            client.Close();
             this.Close();
         }
-
-        private bool FileCompare(string fileName, string lastAccessTime)
+        
+        /// <summary>
+        /// AutoUpdate
+        /// </summary>
+        private void InitAutoUpdate()
         {
-            if (File.Exists(fileName))
+            try
             {
-                FileInfo file = new FileInfo(fileName);
-                if (lastAccessTime.Equals(file.LastAccessTime.ToString()))
+                string dir = Directory.GetCurrentDirectory() + @"\";
+                //string dir = @"C:\TestFolder\FileReceive\";
+                byte[] bytes = new byte[1024];
+                int byteLength = stream.Read(bytes, 0, bytes.Length);   //File Info Receive
+                string fileInfo = Encoding.Default.GetString(bytes, 0, byteLength);
+
+                if (fileInfo != "NoFiles")
+                {
+                    string[] files = fileInfo.Split('/');
+                    Stack<string> fileStack = new Stack<string>();
+                    Dictionary<string, string> dicFile = new Dictionary<string, string>();  //Path, Length
+                    int totalSize = 0;
+                    int byteSize = Convert.ToInt32(files[files.Length - 1]);
+                    long speedCal = byteSize / 8192;
+                    this.lblCount.Text = string.Format("0 / {0:N0}", files.Length);
+
+                    for (int i = 0; i < files.Length - 1; i++)
+                    {
+                        string[] info = files[i].Split('*');
+
+                        if (FileCompare(dir + info[0], info[2]))
+                        {
+                            dicFile.Add(info[0], info[2]);
+                            fileStack.Push(info[0]);
+                            totalSize += Convert.ToInt32(info[2]);
+                        }
+                    }
+
+                    pbrTotal.Maximum = totalSize;
+                    this.lblTotal.Text = string.Format("0 / {0:N0}", files.Length);
+                    int index = 0;
+                    long speed = 0;
+                    Stopwatch sw = new Stopwatch();
+
+                    if (dicFile.Count > 0)
+                    {
+                        foreach (KeyValuePair<string, string> item in dicFile)
+                        {
+                            bytes = new byte[256];
+                            bytes = Encoding.Default.GetBytes(item.Key);
+                            stream.Write(bytes, 0, bytes.Length);   //File Request Send
+
+                            int indexCount = (Convert.ToInt32(item.Value) / byteSize) + 1;
+                            byte[] fileBytes = new byte[byteSize];  //8192
+                            using (FileStream fs = new FileStream(dir + item.Key, FileMode.Create, FileAccess.Write))
+                            {
+                                int count = 0;
+                                pbrNow.Value = 0;
+                                pbrNow.Maximum = Convert.ToInt32(item.Value);
+                                this.lblNow.Text = string.Format("0 / {0:N0}", pbrNow.Maximum);
+                                sw.Reset();
+
+                                for (int j = 0; j < indexCount; j++)
+                                {
+                                    sw.Start();
+
+                                    count = stream.Read(fileBytes, 0, fileBytes.Length);
+                                    fs.Write(fileBytes, 0, count);  //File Receive
+
+                                    sw.Stop();
+
+                                    pbrNow.Value += count;
+                                    pbrTotal.Value += count;
+                                    speed = sw.ElapsedMilliseconds == 0 ? speed : pbrNow.Value * speedCal / sw.ElapsedMilliseconds;
+
+                                    this.lblNow.Text = string.Format("{0:N0} / {1:N0}", pbrNow.Value, pbrNow.Maximum);
+                                    this.lblTotal.Text = string.Format("{0:N0} / {1:N0}", pbrTotal.Value, pbrTotal.Maximum);
+                                    this.lblSpeed.Text = string.Format("{0:N2} kbps", speed);
+                                    Application.DoEvents();
+                                }
+                                this.lblCount.Text = string.Format("{0:N0} / {1:N0}", ++index, files.Length);
+                                Application.DoEvents();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Client의 IP 주소를 가져옵니다.
+        /// </summary>
+        /// <returns></returns>
+        private IPAddress GetIPAddress()
+        {
+            IPHostEntry host = null;
+
+            try
+            {
+                host = Dns.GetHostEntry(Dns.GetHostName());
+                foreach (IPAddress ip in host.AddressList)
+                {
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                        return ip;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                host = null;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Port를 사용할 수 있는지 확인합니다.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        private bool portAvailable(int port)
+        {
+            IPGlobalProperties iPGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            TcpConnectionInformation[] tcpConnInfoArray = iPGlobalProperties.GetActiveTcpConnections();
+            foreach (TcpConnectionInformation tcpi in tcpConnInfoArray)
+            {
+                if (tcpi.LocalEndPoint.Port == port)
                     return false;
             }
             return true;
         }
+
+        #region FileCompare
+        /// <summary>
+        /// File Compare
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="lastAccessTime"></param>
+        /// <returns></returns>
+        public bool FileCompare(string fileName, string length)
+        {
+            if (File.Exists(fileName))
+            {
+                FileInfo file = new FileInfo(fileName);
+                if (length.Equals(file.Length.ToString()))
+                    return false;
+            }
+            return true;
+        }
+        #endregion
     }
 }

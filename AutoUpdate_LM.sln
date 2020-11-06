@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 14 for Windows Desktop
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Express 15 for Windows Desktop
+VisualStudioVersion = 15.0.28307.1267
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate_LM", "AutoUpdate_LM\AutoUpdate_LM.csproj", "{40348967-2029-496B-9AA2-1C0E8A4339E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate", "AutoUpdate_LM\AutoUpdate.csproj", "{40348967-2029-496B-9AA2-1C0E8A4339E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServer", "FileServer\FileServer.csproj", "{E897F5E2-A12C-4C48-91F1-805494F98B92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{918E3B93-7D40-4B8D-817E-F6B24469B0B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpServer", "Server\TcpServer.csproj", "{918E3B93-7D40-4B8D-817E-F6B24469B0B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpComClient", "TcpClient\TcpComClient.csproj", "{88D3E3F7-3EE8-4CA0-9402-71D9FC54D44F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +29,15 @@ Global
 		{918E3B93-7D40-4B8D-817E-F6B24469B0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{918E3B93-7D40-4B8D-817E-F6B24469B0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{918E3B93-7D40-4B8D-817E-F6B24469B0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D3E3F7-3EE8-4CA0-9402-71D9FC54D44F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D3E3F7-3EE8-4CA0-9402-71D9FC54D44F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D3E3F7-3EE8-4CA0-9402-71D9FC54D44F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D3E3F7-3EE8-4CA0-9402-71D9FC54D44F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE63DD1D-EB45-484C-BE51-F1FB65D03A14}
 	EndGlobalSection
 EndGlobal

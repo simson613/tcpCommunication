@@ -6,4 +6,3 @@ C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\
 C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.exe
 C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.pdb
 C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.Server.resources
-C:\Users\simso\onedrive\문서\visual studio 2015\Projects\AutoUpdate_LM\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache

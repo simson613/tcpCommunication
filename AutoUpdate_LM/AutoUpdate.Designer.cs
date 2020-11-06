@@ -1,4 +1,4 @@
-﻿namespace AutoUpdate_LM
+﻿namespace AutoUpdate
 {
     partial class AutoUpdate
     {
@@ -28,23 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AutoUpdate));
             this.pbrTotal = new System.Windows.Forms.ProgressBar();
             this.lblSpeed = new System.Windows.Forms.Label();
             this.pbrNow = new System.Windows.Forms.ProgressBar();
             this.lblCount = new System.Windows.Forms.Label();
+            this.lblNow = new System.Windows.Forms.Label();
+            this.lblTotal = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // pbrTotal
             // 
-            this.pbrTotal.Location = new System.Drawing.Point(33, 101);
+            this.pbrTotal.Location = new System.Drawing.Point(33, 111);
             this.pbrTotal.Name = "pbrTotal";
             this.pbrTotal.Size = new System.Drawing.Size(253, 27);
+            this.pbrTotal.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbrTotal.TabIndex = 0;
             // 
             // lblSpeed
             // 
             this.lblSpeed.AutoSize = true;
-            this.lblSpeed.Location = new System.Drawing.Point(55, 25);
+            this.lblSpeed.Location = new System.Drawing.Point(55, 20);
             this.lblSpeed.Name = "lblSpeed";
             this.lblSpeed.Size = new System.Drawing.Size(62, 12);
             this.lblSpeed.TabIndex = 1;
@@ -53,31 +57,60 @@
             // 
             // pbrNow
             // 
-            this.pbrNow.Location = new System.Drawing.Point(33, 68);
+            this.pbrNow.Location = new System.Drawing.Point(33, 61);
             this.pbrNow.Name = "pbrNow";
             this.pbrNow.Size = new System.Drawing.Size(253, 27);
+            this.pbrNow.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbrNow.TabIndex = 2;
             // 
             // lblCount
             // 
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(208, 25);
+            this.lblCount.Location = new System.Drawing.Point(208, 20);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(38, 12);
             this.lblCount.TabIndex = 3;
             this.lblCount.Text = "Count";
             this.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblNow
+            // 
+            this.lblNow.AutoSize = true;
+            this.lblNow.BackColor = System.Drawing.Color.Transparent;
+            this.lblNow.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblNow.Location = new System.Drawing.Point(31, 46);
+            this.lblNow.Name = "lblNow";
+            this.lblNow.Size = new System.Drawing.Size(11, 11);
+            this.lblNow.TabIndex = 4;
+            this.lblNow.Text = "0";
+            this.lblNow.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.BackColor = System.Drawing.Color.Transparent;
+            this.lblTotal.Font = new System.Drawing.Font("굴림", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTotal.Location = new System.Drawing.Point(31, 96);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(11, 11);
+            this.lblTotal.TabIndex = 5;
+            this.lblTotal.Text = "0";
+            this.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // AutoUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 150);
+            this.ClientSize = new System.Drawing.Size(318, 151);
+            this.Controls.Add(this.lblTotal);
+            this.Controls.Add(this.lblNow);
             this.Controls.Add(this.lblCount);
             this.Controls.Add(this.pbrNow);
             this.Controls.Add(this.lblSpeed);
             this.Controls.Add(this.pbrTotal);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AutoUpdate";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AiHelper_LiveM Auto Update";
             this.Shown += new System.EventHandler(this.AutoUpdate_Shown);
             this.ResumeLayout(false);
@@ -91,6 +124,8 @@
         private System.Windows.Forms.Label lblSpeed;
         private System.Windows.Forms.ProgressBar pbrNow;
         private System.Windows.Forms.Label lblCount;
+        private System.Windows.Forms.Label lblNow;
+        private System.Windows.Forms.Label lblTotal;
     }
 }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AutoUpdate_LM
+namespace AutoUpdate
 {
     static class Program
     {
@@ -16,8 +16,8 @@ namespace AutoUpdate_LM
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            string[] args = Environment.GetCommandLineArgs();
-            Application.Run(new AutoUpdate(args));
+            //string[] args = Environment.GetCommandLineArgs();
+            Application.Run(new AutoUpdate());
         }
     }
 }
